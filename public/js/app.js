@@ -1,4 +1,6 @@
-let database = []
+let database = [
+    { name: "Youssef Labib", email: "youssef@gmail.com", age: 19, password: '123456789#', balance: 1000, history: []}
+];
 
 class User {
     constructor(name, email, age, password) {
@@ -77,7 +79,7 @@ function signup() {
     console.table(database);
 };
 
-// //& LOGIN
+//& LOGIN
 function login() {
     let email = prompt("Enter your email.").trim().toLowerCase();
     let user = database.find(e => e.email === email)
@@ -94,6 +96,45 @@ function login() {
     }
 }
 
+//& CHANGE PASSWORD
+function changePassword() {
+    let email = prompt("Enter your email.").trim().toLowerCase();
+    let user = database.find(e => e.email === email)
+
+    if (!user) {
+        alert("This email does not exist!")
+        return
+    }
+
+    let currentPassword = prompt("Enter your current password.")
+    if (user.password !== currentPassword) {
+        alert("Incorrect password!")
+        return
+    }
+    
+    let newPassword = prompt("Enter your new password.")
+    newPasswordConfirmed = prompt("Confirm your password.")
+    
+    function verifChangedPassword() {
+        while (newPassword.length < 7 || !/[@#\-+*/]/.test(newPassword) || /\s/.test(newPassword) || newPassword !== newPasswordConfirmed) {
+            if (newPassword !== newPasswordConfirmed) {
+                alert("Password does not match!");
+            } else {
+                alert("Enter a strong password with atleast 1 special character.");
+            }
+            newPassword = prompt("Enter a strong password!");
+            newPasswordConfirmed = prompt("Confirm your password.");
+        }
+    }
+
+    newPassword = verifChangedPassword();
+
+    user.password = newPassword;
+    alert("Password changed successfully!")
+
+}
+
+
 //& MAIN PAGE PROMPT
 let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase()
 
@@ -108,3 +149,4 @@ while (ask !== "exit") {
     ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
 }
 alert("See you later.");
+
