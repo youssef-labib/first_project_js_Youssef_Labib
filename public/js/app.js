@@ -16,7 +16,7 @@ function signup() {
     let name = prompt("Enter your full name.").trim();
 
     function verifName() {
-        while (name.replace(/\s/g, '').length < 5 || /[0-9@#\-+*/]/.test(name)) {
+        while (name.replace(/\s/g, '').length < 5 || /[0-9@#\-+*/$!%^&*_()?]/.test(name)) {
             name = prompt("Enter a valid name!").trim();
         }
         return name.split(' ').map(e => e.charAt(0).toUpperCase() + e.slice(1).toLowerCase()).join(' ');
@@ -57,7 +57,7 @@ function signup() {
     let passwordConfirmed = prompt("Confirm your password.");
 
     function verifPassword() {
-        while (password.length < 7 || !/[#@\-+*/]/.test(password) || /\s/.test(password) || password !== passwordConfirmed) {
+        while (password.length < 7 || !/[@#\-+*/]/.test(password) || /\s/.test(password) || password !== passwordConfirmed) {
             if (password !== passwordConfirmed) {
                 alert("Password does not match!");
             } else {
@@ -73,9 +73,26 @@ function signup() {
     
     let user = new User(name, email, age, password);
     database.push(user);
-
+    
     console.table(database);
 };
+
+// //& LOGIN
+function login() {
+    let email = prompt("Enter your email.").trim().toLowerCase();
+    let user = database.find(e => e.email === email)
+    if (!user) {
+        alert("This email does not exist!")
+        return
+    }
+
+    let password = prompt("Enter your password.")
+    if (user.password !== password) {
+        alert("Incorrect password!")
+    } else {
+        alert(`Login successful. Welcome back to your account, ${user.name} \nYour balance is ${user.balance.toFixed(2)}$`)
+    }
+}
 
 //& MAIN PAGE PROMPT
 let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase()
@@ -91,5 +108,3 @@ while (ask !== "exit") {
     ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
 }
 alert("See you later.");
-
-
