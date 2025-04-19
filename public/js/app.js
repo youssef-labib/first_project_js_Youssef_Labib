@@ -163,8 +163,8 @@ function dashboard(user) {
                 loan(user)
                 break;
             case "invest":
-                // ndkhlo lfunction d invest
-                break;
+                invest(user)
+            break;
             case "history":
                 history(user)
                 break;
@@ -216,25 +216,40 @@ function deposit(user) {
 }
 
 //& LOAN
+//^ Makamlach ela 7e9ha o tri9ha 4:19 d sbah hadi anmot bn3ass 
 function loan(user) {
+    let maxLoan = user.balance * 0.2
+    let confirmLoan = parseFloat(prompt("How much you want to borrow ? (you can't exceed 20% of your actual balance)"))
+
     if (user.loan > 0) {
         alert(`You already have an active loan of ${user.loan.toFixed(2)}$. Please repay it before taking another one.`)
         return
     }
 
-    let maxLoan = user.balance * 0.2
-    let confirmLoan = prompt("How much you want to borrow ? (you can't exceed 20% of your actual balance)")
-    let amount = parseFloat(confirmLoan)
-
-    if (amount > maxLoan || isNaN(amount) || amount <= 0) {
+    if (confirmLoan > maxLoan || isNaN(confirmLoan) || confirmLoan <= 0) {
         alert("Invalid loan amount! (do not exceed 20% of your balance)");
         return;
     }
 
-    user.balance += amount;
-    user.loan = amount;
+    user.balance += confirmLoan;
+    user.loan = confirmLoan;
     alert(`Loan successfully received.\nAmount credited: ${user.loan}`);
-    user.history.push(`Took a loan of ${amount.toFixed(2)}$`);
+    user.history.push(`Took a loan of ${confirmLoan.toFixed(2)}$`);
+}
+
+//& INVEST
+//^ Makamlach ela 7e9ha o tri9ha 4:19 d sbah hadi anmot bn3ass 
+function invest(user) {
+    let investAmount = prompt("How much you want to invest ?")
+
+    if (isNaN(investAmount) || investAmount <= 0) {
+        alert("Invalid input, please enter a valid amount of money.");
+        return;
+    }
+
+    user.balance = investAmount * 1.2
+    alert(`You invested ${investAmount.amount}$, here is your new balance: ${user.balance}$`)
+    user.history.push(`Investement of ${investAmount}$`)
 }
 
 //& HISTORY
