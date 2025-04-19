@@ -147,7 +147,7 @@ function changePassword() {
 //& DASHBOARD
 function dashboard(user) {
     while (true) {
-        let choice = prompt("Choose between these services: Logout | Withdraw Money | Deposit Money | Take a Loan | Invest | History").toLowerCase();
+        let choice = prompt("Choose between these services: Logout | Withdraw | Deposit | Loan | Invest | History").toLowerCase();
 
         switch (choice) {
             case "logout":
@@ -160,14 +160,14 @@ function dashboard(user) {
                 deposit(user)
                 break;
             case "loan":
-                // ndkhlo lfunction d loan
+                loan(user)
                 break;
             case "invest":
                 // ndkhlo lfunction d invest
                 break;
             case "history":
                 history(user)
-            break;
+                break;
 
             default:
                 alert("Please choose a valid service, try again!")
@@ -215,6 +215,28 @@ function deposit(user) {
     }
 }
 
+//& LOAN
+function loan(user) {
+    if (user.loan > 0) {
+        alert(`You already have an active loan of ${user.loan.toFixed(2)}$. Please repay it before taking another one.`)
+        return
+    }
+
+    let maxLoan = user.balance * 0.2
+    let confirmLoan = prompt("How much you want to borrow ? (you can't exceed 20% of your actual balance)")
+    let amount = parseFloat(confirmLoan)
+
+    if (amount > maxLoan || isNaN(amount) || amount <= 0) {
+        alert("Invalid loan amount! (do not exceed 20% of your balance)");
+        return;
+    }
+
+    user.balance += amount;
+    user.loan = amount;
+    alert(`Loan successfully received.\nAmount credited: ${user.loan}`);
+    user.history.push(`Took a loan of ${amount.toFixed(2)}$`);
+}
+
 //& HISTORY
 function history(user) {
     if (user.history.length <= 0) {
@@ -222,34 +244,7 @@ function history(user) {
     } else {
         alert(`Recent activity:\n${user.history.join("\n")}`)
     }
-} 
-
-//! ## 3 - Instructions:
-// - Account Creation and Management:
-//     + Allow the user, via prompts, to choose between signing up, logging in, or changing the password.
-//     + If the user only writes "exit," they exit the current process, and the choice question is asked again.
-
-//         ~ After the user logs in, display the amount they have in their bank (user's choice) and offer them services:
-//?             # Logout:
-//             - If the user chooses this option, they are logged out and offered the option, as at the beginning, to sign up, log in, or change the password.
-
-//?             # Withdraw Money:
-//             - If the user chooses this option, they can withdraw an amount from their bank (not exceeding the available amount).
-
-//?             # Deposit Money:
-//             - If the user chooses this option, they can deposit the desired amount (not exceeding 1000 dirhams).
-
-//?             # Take a Loan:
-//             - If the user chooses this option, they can take a loan up to 20% of what they already have.
-//             - They receive an additional 20%, but lose 10% with each login until reaching the amount of their loan.
-
-//?             # Invest:
-//             - If the user chooses this option, they can invest any amount in the bank.
-//             - Upon the next login, they will receive 20% of their investment each time until reaching 120% (earning 20% on each investment).
-
-//?             # History:
-//             - Ability to view the entire transaction history.
-
+}
 
 //& MAIN PAGE PROMPT
 let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
