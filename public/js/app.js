@@ -86,7 +86,7 @@ function signup() {
     database.push(user);
 
     console.table(database);
-};
+}
 
 //& LOGIN
 function login() {
@@ -180,6 +180,11 @@ function dashboard(user) {
 function withdraw(user) {
     let amount = parseFloat(prompt("How much you want to withdraw ?"))
 
+    if (isNaN(amount) || amount <= 0) {
+        alert("Invalid input, please enter a valid amount of money.");
+        return;
+    }
+
     if (amount <= user.balance) {
         user.balance -= amount
         alert(`${user.name} withdrawn ${amount.toFixed(2)}$.`)
@@ -194,6 +199,11 @@ function withdraw(user) {
 //& DEPOSIT
 function deposit(user) {
     let amount = parseFloat(prompt("Enter an amount to deposit (do not exceed 1000 dollar)"))
+
+    if (isNaN(amount) || amount <= 0) {
+        alert("Invalid input, please enter a valid amount of money.");
+        return;
+    }
 
     if (amount <= 1000) {
         user.balance += amount
