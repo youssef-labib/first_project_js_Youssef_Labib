@@ -26,6 +26,10 @@ class User {
 function signup() {
     let name = prompt("Enter your full name.").trim();
 
+    if (name === "exit") {
+        return;
+    }
+
     function verifName() {
         while (name.replace(/\s/g, '').length < 5 || /[0-9@#\-+*/$!%^&*_()?]/.test(name)) {
             name = prompt("Enter a valid name!").trim();
@@ -36,6 +40,10 @@ function signup() {
     name = verifName();
 
     let email = prompt("Enter your email.").trim().toLowerCase();
+
+    if (email === "exit") {
+        return;
+    }
 
     function verifEmail() {
         while (true) {
@@ -55,6 +63,10 @@ function signup() {
 
     let age = prompt("Enter your age.").trim();
 
+    if (age === "exit") {
+        return;
+    }
+
     function verifAge() {
         while (age.length === 0 || age.length > 2 || !/^\d+$/.test(age)) {
             age = prompt("Enter a valid age!").trim();
@@ -67,15 +79,23 @@ function signup() {
     let password = prompt("Enter a strong password!");
     let passwordConfirmed = prompt("Confirm your password.");
 
+    if (password === "exit" || passwordConfirmed === "exit") {
+        return;
+    }
+
     function verifPassword() {
         while (password.length < 7 || !/[@#\-+*/]/.test(password) || /\s/.test(password) || password !== passwordConfirmed) {
             if (password !== passwordConfirmed) {
-                alert("Password does not match!");
+                alert("Password does not match!")
             } else {
-                alert("Enter a strong password with atleast 1 special character.");
+                alert("Enter a strong password with atleast 1 special character.")
             }
-            password = prompt("Enter a strong password!");
-            passwordConfirmed = prompt("Confirm your password.");
+            password = prompt("Enter a strong password!")
+            passwordConfirmed = prompt("Confirm your password.")
+
+            if (password === "exit" || passwordConfirmed === "exit") {
+                return;
+            }
         }
         return password;
     };
@@ -91,6 +111,11 @@ function signup() {
 //& LOGIN
 function login() {
     let email = prompt("Enter your email.").trim().toLowerCase();
+
+    if (email === "exit") {
+        return;
+    }
+
     let user = database.find(e => e.email === email)
     if (!user) {
         alert("This email does not exist!")
@@ -98,6 +123,11 @@ function login() {
     }
 
     let password = prompt("Enter your password.")
+
+    if (password === "exit") {
+        return;
+    }
+
     if (user.password !== password) {
         alert("Incorrect password!")
     } else {
@@ -109,6 +139,11 @@ function login() {
 //& CHANGE PASSWORD
 function changePassword() {
     let email = prompt("Enter your email.").trim().toLowerCase();
+
+    if (email === "exit") {
+        return;
+    }
+
     let user = database.find(e => e.email === email)
 
     if (!user) {
@@ -117,6 +152,11 @@ function changePassword() {
     }
 
     let currentPassword = prompt("Enter your current password.")
+
+    if (currentPassword === "exit") {
+        return;
+    }
+
     if (user.password !== currentPassword) {
         alert("Incorrect password!")
         return
@@ -125,6 +165,10 @@ function changePassword() {
     let newPassword = prompt("Enter your new password.")
     newPasswordConfirmed = prompt("Confirm your password.")
 
+    if (newPassword === "exit" || newPasswordConfirmed === "exit") {
+        return;
+    }
+
     function verifChangedPassword() {
         while (newPassword.length < 7 || !/[@#\-+*/]/.test(newPassword) || /\s/.test(newPassword) || newPassword !== newPasswordConfirmed) {
             if (newPassword !== newPasswordConfirmed) {
@@ -132,8 +176,12 @@ function changePassword() {
             } else {
                 alert("Enter a strong password with atleast 1 special character.");
             }
-            newPassword = prompt("Enter a strong password!");
-            newPasswordConfirmed = prompt("Confirm your password.");
+            newPassword = prompt("Enter a strong password!")
+            newPasswordConfirmed = prompt("Confirm your password.")
+
+            if (newPassword === "exit" || newPasswordConfirmed === "exit") {
+                return;
+            }
         }
     }
 
@@ -164,10 +212,13 @@ function dashboard(user) {
                 break;
             case "invest":
                 invest(user)
-            break;
+                break;
             case "history":
                 history(user)
                 break;
+            case "exit":
+                exit()
+                return;
 
             default:
                 alert("Please choose a valid service, try again!")
@@ -179,6 +230,10 @@ function dashboard(user) {
 //& WITHDRAW 
 function withdraw(user) {
     let amount = parseFloat(prompt("How much you want to withdraw ?"))
+
+    if (amount === "exit") {
+        return;
+    }
 
     if (isNaN(amount) || amount <= 0) {
         alert("Invalid input, please enter a valid amount of money.");
@@ -200,6 +255,10 @@ function withdraw(user) {
 function deposit(user) {
     let amount = parseFloat(prompt("Enter an amount to deposit (do not exceed 1000 dollar)"))
 
+    if (amount === "exit") {
+        return;
+    }
+
     if (isNaN(amount) || amount <= 0) {
         alert("Invalid input, please enter a valid amount of money.");
         return;
@@ -216,10 +275,14 @@ function deposit(user) {
 }
 
 //& LOAN
-//^ Makamlach ela 7e9ha o tri9ha 4:19 d sbah hadi anmot bn3ass 
+//^ Makamlach ela 7e9ha o tri9ha 4:51 d sbah hadi anmot bn3ass 
 function loan(user) {
     let maxLoan = user.balance * 0.2
     let confirmLoan = parseFloat(prompt("How much you want to borrow ? (you can't exceed 20% of your actual balance)"))
+
+    if (confirmLoan === "exit") {
+        return;
+    }
 
     if (user.loan > 0) {
         alert(`You already have an active loan of ${user.loan.toFixed(2)}$. Please repay it before taking another one.`)
@@ -238,18 +301,24 @@ function loan(user) {
 }
 
 //& INVEST
-//^ Makamlach ela 7e9ha o tri9ha 4:19 d sbah hadi anmot bn3ass 
+//^ Makamlach ela 7e9ha o tri9ha 4:51 d sbah hadi anmot bn3ass 
 function invest(user) {
     let investAmount = prompt("How much you want to invest ?")
+
+    if (investAmount === "exit") {
+        return;
+    }
 
     if (isNaN(investAmount) || investAmount <= 0) {
         alert("Invalid input, please enter a valid amount of money.");
         return;
+    } else if (investAmount <= user.balance) {
+        user.balance = investAmount * 1.2
+        alert(`You invested ${investAmount}$, here is your new balance: ${user.balance}$`)
+        user.history.push(`Investement of ${investAmount}$`)
+    } else {
+        alert("You don't have enough money")
     }
-
-    user.balance = investAmount * 1.2
-    alert(`You invested ${investAmount.amount}$, here is your new balance: ${user.balance}$`)
-    user.history.push(`Investement of ${investAmount}$`)
 }
 
 //& HISTORY
@@ -262,7 +331,7 @@ function history(user) {
 }
 
 //& MAIN PAGE PROMPT
-let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
+let ask = prompt("Choose between: sign up | login | change password | exit").trim().toLowerCase();
 
 while (ask !== "exit") {
     if (ask === "sign up") {
