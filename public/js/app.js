@@ -1,5 +1,13 @@
 let database = [
-    { name: "Youssef Labib", email: "youssef@gmail.com", age: 19, password: '123456789#', balance: 1000, history: []}
+    {
+        name: "Youssef Labib",
+        email: "youssef@gmail.com",
+        age: 19,
+        password: '123456789#',
+        balance: 1000,
+        history: [],
+        loan: 0
+    }
 ];
 
 class User {
@@ -10,6 +18,7 @@ class User {
         this.password = password
         this.balance = 1000
         this.history = []
+        this.loan = 0
     }
 }
 
@@ -43,18 +52,18 @@ function signup() {
     };
 
     email = verifEmail();
-    
+
     let age = prompt("Enter your age.").trim();
-    
+
     function verifAge() {
         while (age.length === 0 || age.length > 2 || !/^\d+$/.test(age)) {
             age = prompt("Enter a valid age!").trim();
         }
         return parseInt(age);
     };
-    
+
     age = verifAge();
-    
+
     let password = prompt("Enter a strong password!");
     let passwordConfirmed = prompt("Confirm your password.");
 
@@ -72,10 +81,10 @@ function signup() {
     };
 
     password = verifPassword();
-    
+
     let user = new User(name, email, age, password);
     database.push(user);
-    
+
     console.table(database);
 };
 
@@ -93,6 +102,7 @@ function login() {
         alert("Incorrect password!")
     } else {
         alert(`Login successful. Welcome back to your account, ${user.name} \nYour balance is ${user.balance.toFixed(2)}$`)
+        dashboard(user)
     }
 }
 
@@ -111,10 +121,10 @@ function changePassword() {
         alert("Incorrect password!")
         return
     }
-    
+
     let newPassword = prompt("Enter your new password.")
     newPasswordConfirmed = prompt("Confirm your password.")
-    
+
     function verifChangedPassword() {
         while (newPassword.length < 7 || !/[@#\-+*/]/.test(newPassword) || /\s/.test(newPassword) || newPassword !== newPasswordConfirmed) {
             if (newPassword !== newPasswordConfirmed) {
@@ -134,9 +144,81 @@ function changePassword() {
 
 }
 
+//& DASHBOARD
+function dashboard(user) {
+    while (true) {
+        let choice = prompt("Choose between these services: Logout | Withdraw Money | Deposit Money | Take a Loan | Invest | History").toLowerCase();
+
+        switch (choice) {
+            case "logout":
+                alert("Logout successful")
+                return;
+            case "withdraw":
+                withdraw(user);
+            break;
+            case "deposit":
+                // ndkhlo lfunction d Deposit Money
+                break;
+            case "loan":
+                // ndkhlo lfunction d loan
+                break;
+            case "invest":
+                // ndkhlo lfunction d invest
+                break;
+            case "history":
+                // ndkhlo lfunction d history
+                break;
+
+            default:
+                alert("Please choose a valid service, try again!")
+                break;
+        }
+    }
+}
+
+//& WITHDRAW 
+function withdraw(user) {
+    let amount = parseFloat(prompt("How much you want to withdraw ?"))
+    if (amount <= user.balance) {
+        user.balance -= amount
+        alert(`${user.name} withdrawn ${amount}$.`)
+    }
+    else {
+        alert("Insufficient balance")
+    }
+    return;
+}
+
+
+//! ## 3 - Instructions:
+// - Account Creation and Management:
+//     + Allow the user, via prompts, to choose between signing up, logging in, or changing the password.
+//     + If the user only writes "exit," they exit the current process, and the choice question is asked again.
+
+//         ~ After the user logs in, display the amount they have in their bank (user's choice) and offer them services:
+//?             # Logout:
+//             - If the user chooses this option, they are logged out and offered the option, as at the beginning, to sign up, log in, or change the password.
+
+//?             # Withdraw Money:
+//             - If the user chooses this option, they can withdraw an amount from their bank (not exceeding the available amount).
+
+//?             # Deposit Money:
+//             - If the user chooses this option, they can deposit the desired amount (not exceeding 1000 dirhams).
+
+//?             # Take a Loan:
+//             - If the user chooses this option, they can take a loan up to 20% of what they already have.
+//             - They receive an additional 20%, but lose 10% with each login until reaching the amount of their loan.
+
+//?             # Invest:
+//             - If the user chooses this option, they can invest any amount in the bank.
+//             - Upon the next login, they will receive 20% of their investment each time until reaching 120% (earning 20% on each investment).
+
+//?             # History:
+//             - Ability to view the entire transaction history.
+
 
 //& MAIN PAGE PROMPT
-let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase()
+let ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
 
 while (ask !== "exit") {
     if (ask === "sign up") {
@@ -145,8 +227,10 @@ while (ask !== "exit") {
         login();
     } else if (ask === "change password") {
         changePassword();
+    } else {
+        alert("Invalid choice, try again!");
     }
+
     ask = prompt("Choose between: sign up | login | change password | exit").toLowerCase();
 }
 alert("See you later.");
-
