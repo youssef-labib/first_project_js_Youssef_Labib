@@ -154,10 +154,10 @@ function dashboard(user) {
                 alert("Logout successful")
                 return;
             case "withdraw":
-                withdraw(user);
-            break;
+                withdraw(user)
+                break;
             case "deposit":
-                // ndkhlo lfunction d Deposit Money
+                deposit(user)
                 break;
             case "loan":
                 // ndkhlo lfunction d loan
@@ -166,8 +166,8 @@ function dashboard(user) {
                 // ndkhlo lfunction d invest
                 break;
             case "history":
-                // ndkhlo lfunction d history
-                break;
+                history(user)
+            break;
 
             default:
                 alert("Please choose a valid service, try again!")
@@ -179,9 +179,11 @@ function dashboard(user) {
 //& WITHDRAW 
 function withdraw(user) {
     let amount = parseFloat(prompt("How much you want to withdraw ?"))
+
     if (amount <= user.balance) {
         user.balance -= amount
-        alert(`${user.name} withdrawn ${amount}$.`)
+        alert(`${user.name} withdrawn ${amount.toFixed(2)}$.`)
+        user.history.push(`Withdrawal of ${amount.toFixed(2)}$`)
     }
     else {
         alert("Insufficient balance")
@@ -189,6 +191,28 @@ function withdraw(user) {
     return;
 }
 
+//& DEPOSIT
+function deposit(user) {
+    let amount = parseFloat(prompt("Enter an amount to deposit (do not exceed 1000 dollar)"))
+
+    if (amount <= 1000) {
+        user.balance += amount
+        alert(`${user.name} deposited ${amount.toFixed(2)}$`)
+        user.history.push(`Deposit of ${amount.toFixed(2)}$`)
+    }
+    else {
+        alert("You can't deposit more than 1000$")
+    }
+}
+
+//& HISTORY
+function history(user) {
+    if (user.history.length <= 0) {
+        alert("No recent activity")
+    } else {
+        alert(`Recent activity:\n${user.history.join("\n")}`)
+    }
+} 
 
 //! ## 3 - Instructions:
 // - Account Creation and Management:
